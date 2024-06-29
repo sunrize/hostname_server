@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  app:
+    build: ./app/
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    volumes:
+      # - app_migrations:/usr/src/app/app_migrations
+      - app_migrations:/usr/src/app/migrations
+    env_file:
+      - ./app/.env
+  db:
+    image: postgres:16.3
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+    secrets:
+      - postgres-password
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+secrets:
+  postgres-password:
+    file: postgres-password.txt
+
+volumes:
+  db_data:
+  app_migrations:

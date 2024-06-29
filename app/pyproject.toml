@@ -1,0 +1,14 @@
+[project]
+name = "hostname_server"
+version = "0.0.1"
+dependencies = [
+    "flask",
+    "sqlalchemy",
+    "psycopg2",
+    "Flask-SQLAlchemy",
+    "Flask-Migrate"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

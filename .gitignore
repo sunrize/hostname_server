@@ -1,0 +1,4 @@
+bruno/
+database/
+*-password.txt
+.mypy_cache/

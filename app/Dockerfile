@@ -44,7 +44,20 @@ RUN mkdir /data
 # can be overwritten with `docker run -p ...`
 EXPOSE 5000/tcp
 
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /usr/src/app
+RUN chown -R appuser /data
+USER appuser
+
 # Run command
+# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 # CMD [ "gunicorn", "-w", "1", "--bind", "0.0.0.0:5000", "hostname_server.app:app" ]
 ENTRYPOINT ["./docker-entrypoint.sh"]
 

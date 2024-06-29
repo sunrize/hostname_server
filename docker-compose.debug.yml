@@ -4,8 +4,15 @@ services:
   app:
     image: hostnameserver
     build: ./app/
+    # command:
+    #   [
+    #     "sh",
+    #     "-c",
+    #     "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m flask run --no-debugger --no-reload --host 0.0.0.0 --port 5000"
+    #   ]
     ports:
       - 5000:5000
+      - 5678:5678
     depends_on:
       - db
     volumes:
@@ -13,6 +20,10 @@ services:
       - app_migrations:/usr/src/app/migrations
     env_file:
       - ./app/.env
+    environment:
+      - FLASK_ENV=docker
+      - FLASK_APP=hostname_server/app.py
+      - APP_DEBUG=true
   db:
     image: postgres:16.3
     restart: always

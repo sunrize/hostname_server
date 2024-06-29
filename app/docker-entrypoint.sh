@@ -28,5 +28,8 @@ fi
 #     # Sync ./app_migrations to ./migrations  
 # fi
 
-
-gunicorn -w 1 --bind "0.0.0.0:5000" "hostname_server.app:app"
+if [[ "$APP_DEBUG" == 'true' ]]; then
+    pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m flask run --no-debugger --no-reload --host 0.0.0.0 --port 5000
+else
+    gunicorn -w 1 --bind "0.0.0.0:5000" "hostname_server.app:app"
+fi

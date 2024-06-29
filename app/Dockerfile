@@ -27,7 +27,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy app sources
 COPY pyproject.toml /usr/src/app
 COPY MANIFEST.in /usr/src/app
-COPY LICENSE /usr/src/app
 COPY docker-entrypoint.sh /usr/src/app
 RUN chmod u+x ./docker-entrypoint.sh
 COPY manage.py /usr/src/app
